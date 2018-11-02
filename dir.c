@@ -4,10 +4,21 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-int main() {
-  DIR * d = opendir("directory");
+int main(int argc, char * argv[]) {
+  char str[256];
+  if (argc == 1) {
+    printf("Please name a directory: ");
+    scanf("%s", str);
+    printf("%s\n", str);
+    int i = 0;
+    while (str[i] != '\n') {
+      i++;
+    }
+    str[i] = 0;
+  }
+  DIR * d = opendir(str);
   struct stat *s = malloc(sizeof(struct stat));
-  stat("directory", s);
+  stat(d, s);
 
   printf("Statistics for directory: \n");
   printf("Directory size: %ld Bytes\n", s->st_size);
@@ -18,7 +29,7 @@ int main() {
     entry = readdir(d);
   }
   closedir(d);
-  d = opendir("directory");
+  d = opendir(str);
 
   printf("Files: \n");
   while (entry) {
